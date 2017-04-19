@@ -4,8 +4,11 @@ version = "0.1.0"
 authors = ["Stephen M. Coakley <me@stephencoakley.com>"]
 
 [dependencies]
+chrono = "0.3.0"
 getopts = "0.2.14"
+lz4 = "1.20.0"
+walkdir = "1"
 
 [dependencies.rusqlite]
 version = "0.10.1"
-features = ["blob", "bundled"]
+features = ["blob", "bundled", "chrono"]
