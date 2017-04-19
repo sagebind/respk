@@ -23,12 +23,14 @@ pub use error::Error;
 // Database schema.
 const SCHEMA: &'static str = "
     CREATE TABLE IF NOT EXISTS resources (
-        path            TEXT PRIMARY KEY NOT NULL,
+        path            TEXT NOT NULL,
         locale          TEXT,
         date_created    TEXT,
         date_modified   TEXT,
         size            INTEGER NOT NULL,
-        contents        BLOB
+        contents        BLOB,
+
+        PRIMARY KEY (path, locale)
     );
 ";
 
@@ -45,6 +47,7 @@ impl Package {
         lets! {
             let Ok(connection) = Connection::open(path);
             let Ok(_) = connection.execute(SCHEMA, &[]);
+
             else Err(Error::SQLError);
             lift Ok(Package {
                 db: connection,
@@ -199,10 +202,20 @@ impl Package {
     }
 
     /// Delete a resource from the package.
-    pub fn delete<S: AsRef<str>>(&self, path: S) -> Result<(), error::Error> {
+    pub fn delete<S, L>(&self, path: S, locale: L) -> Result<(), Error>
+        where S: AsRef<str>,
+              L: Into<Option<Locale>>
+    {
+        let path = path.as_ref();
+        let locale_name: Option<String> = locale.into().map(|l| l.to_string());
+
         lets! {
-            let Ok(count) = self.db.execute("DELETE FROM resources WHERE path = ?", &[&path.as_ref()]);
+            let Ok(count) = self.db.execute("
+                DELETE FROM resources
+                WHERE path = ? AND locale = ?
+            ", &[&path, &locale_name]);
             let 1 = count;
+
             else Err(error::Error::ResourceNotFound);
             lift Ok(());
         }
