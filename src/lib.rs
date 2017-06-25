@@ -1,8 +1,6 @@
 #![allow(dead_code)]
 extern crate lz4;
 extern crate rusqlite;
-#[macro_use]
-extern crate rustcane;
 
 mod compression;
 mod error;

@@ -29,15 +29,12 @@ impl Package {
     ///
     /// If the file does not exist, it will be created.
     pub fn open<P: AsRef<Path>>(path: P) -> Result<Package, Error> {
-        lets! {
-            let Ok(connection) = Connection::open(path);
-            let Ok(_) = connection.execute(SCHEMA, &[]);
+        let connection = Connection::open(path)?;
+        connection.execute(SCHEMA, &[])?;
 
-            else Err(Error::InternalError);
-            lift Ok(Package {
-                db: connection,
-            });
-        }
+        Ok(Package {
+            db: connection,
+        })
     }
 
     /// Get the number of files in the package.
