@@ -1,0 +1,18 @@
+machine:
+    environment:
+        PATH: "$HOME/.cargo/bin:$PATH"
+        RUST_BACKTRACE: 1
+    post:
+        - curl https://sh.rustup.rs -sSf | sh -s -- -y
+
+checkout:
+    post:
+        - git config --global --unset url.ssh://git@github.com:.insteadof
+
+compile:
+    override:
+        - cargo build
+
+test:
+    override:
+        - cargo test --all
