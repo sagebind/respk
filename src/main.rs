@@ -4,8 +4,7 @@ extern crate walkdir;
 
 use respk::Package;
 use std::env;
-use std::fs::{self, File};
-use std::io::Read;
+use std::fs::File;
 use std::process::exit;
 use walkdir::WalkDir;
 
@@ -24,7 +23,6 @@ macro_rules! printerr {
 fn main() {
     let mut options = getopts::Options::new();
 
-    options.optflag("", "ignore-errors", "Keep going when encountering I/O errors");
     options.optflag("h", "help", "Show this help message");
     options.optflag("v", "version", "Show the program version");
 
@@ -79,15 +77,18 @@ Commands:
 
 fn add(package: Package, paths: &[String]) {
     for path in paths {
-        let metadata = fs::metadata(path).unwrap();
+        for entry in WalkDir::new(path) {
+            if let Ok(entry) = entry {
+                if let Ok(full_path) = entry.path().canonicalize() {
+                    println!("{}", full_path.display());
 
-        if metadata.is_dir() {
-            for entry in WalkDir::new(path) {}
-        } else {
-            println!("{}", path);
-
-            let file = File::open(path).unwrap();
-            package.add(path, file).unwrap();
+                    if let Ok(file) = File::open(full_path) {
+                        if let Some(name) = entry.path().to_str() {
+                            package.write(name, file).unwrap();
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -96,7 +97,12 @@ fn delete(package: Package, paths: &[String]) {}
 
 fn list(package: Package) {
     for resource in package.resources().unwrap() {
-        println!("{}    {} bytes", resource.path(), resource.size());
+        println!(
+            "{:16} {}B ({}B compressed)",
+            resource.path(),
+            resource.size(),
+            resource.compressed_size(),
+        );
     }
 }
 

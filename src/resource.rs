@@ -1,30 +1,20 @@
-use chrono::prelude::*;
-use locale::Locale;
 use rusqlite::Row;
 use std::ops::Deref;
 use std::str;
 
 
 /// Provides information about a resource.
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct ResourceInfo {
     path: String,
-    locale: Option<Locale>,
     size: u32,
     compressed_size: u32,
-    date_created: Option<DateTime<UTC>>,
-    date_modified: Option<DateTime<UTC>>,
 }
 
 impl ResourceInfo {
     /// Get the path of the resource.
     pub fn path(&self) -> &str {
         &self.path
-    }
-
-    /// Get the locale of the resource, if any.
-    pub fn locale(&self) -> Option<&Locale> {
-        self.locale.as_ref()
     }
 
     /// Get the full size of the resource contents.
@@ -40,14 +30,12 @@ impl ResourceInfo {
     pub(crate) fn from_row(row: &Row) -> ResourceInfo {
         ResourceInfo {
             path: row.get("path"),
-            locale: row.get::<_, Option<String>>("locale").map(Locale::from),
             size: row.get("size"),
             compressed_size: row.get("compressed_size"),
-            date_created: row.get("date_created"),
-            date_modified: row.get("date_modified"),
         }
     }
 }
+
 
 /// A decompressed resource.
 pub struct Resource {

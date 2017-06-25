@@ -7,6 +7,7 @@ authors = ["Stephen M. Coakley <me@stephencoakley.com>"]
 chrono = "0.3.0"
 getopts = "0.2.14"
 lz4 = "1.20.0"
+rustcane = {path = "../rustcane"}
 walkdir = "1"
 
 [dependencies.rusqlite]
