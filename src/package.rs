@@ -47,6 +47,16 @@ impl Package {
         })
     }
 
+    /// Create a new in-memory package. Used for testing.
+    pub(crate) fn temporary() -> Result<Package, Error> {
+        let connection = Connection::open_in_memory()?;
+        connection.execute(SCHEMA, &[])?;
+
+        Ok(Package {
+            db: connection,
+        })
+    }
+
     /// Get the number of files in the package.
     pub fn len(&self) -> u64 {
         self.db.query_row("
@@ -57,7 +67,7 @@ impl Package {
     /// Get a list of resources in the package.
     pub fn resources(&self) -> Result<Vec<ResourceInfo>, Error> {
         let mut stmt = self.db.prepare("
-            SELECT path, locale, size, LENGTH(contents) AS compressed_size
+            SELECT path, size, LENGTH(contents) AS compressed_size
             FROM resources
         ")?;
         let mut rows = stmt.query(&[])?;
@@ -149,7 +159,7 @@ impl Package {
     }
 
     /// Delete a resource from the package.
-    pub fn delete<S, L>(&self, path: S) -> Result<(), Error>
+    pub fn delete<S>(&self, path: S) -> Result<(), Error>
         where S: AsRef<str>
     {
         let path = path.as_ref();

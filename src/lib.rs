@@ -6,6 +6,7 @@ mod compression;
 mod error;
 mod package;
 mod resource;
+mod tests;
 
 pub use error::Error;
 pub use package::Package;

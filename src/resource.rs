@@ -38,6 +38,7 @@ impl ResourceInfo {
 
 
 /// A decompressed resource.
+#[derive(Debug)]
 pub struct Resource {
     info: ResourceInfo,
     contents: Vec<u8>,

@@ -4,7 +4,9 @@ extern crate walkdir;
 
 use respk::Package;
 use std::env;
+use std::error::Error;
 use std::fs::File;
+use std::io;
 use std::process::exit;
 use walkdir::WalkDir;
 
@@ -63,19 +65,23 @@ Commands:
         exit(1);
     });
 
-    match command.as_ref() {
+    let result = match command.as_ref() {
         "add" => add(package, paths),
         "delete" => delete(package, paths),
         "list" => list(package),
-        "extract" => extract(package, paths),
+        "extract" => extract(package),
         _ => {
             printerr!("Unknown command: '{}'", command);
             exit(1);
         },
+    };
+
+    if let Err(e) = result {
+        printerr!("{}", e);
     }
 }
 
-fn add(package: Package, paths: &[String]) {
+fn add(package: Package, paths: &[String]) -> Result<(), Box<Error>> {
     for path in paths {
         for entry in WalkDir::new(path) {
             if let Ok(entry) = entry {
@@ -91,11 +97,21 @@ fn add(package: Package, paths: &[String]) {
             }
         }
     }
+
+    Ok(())
 }
 
-fn delete(package: Package, paths: &[String]) {}
+fn delete(package: Package, paths: &[String]) -> Result<(), Box<Error>> {
+    for path in paths {
+        if let Err(respk::Error::ResourceNotFound) = package.delete(path) {
+            printerr!("Resource not found: {}", path);
+        }
+    }
 
-fn list(package: Package) {
+    Ok(())
+}
+
+fn list(package: Package) -> Result<(), Box<Error>> {
     for resource in package.resources().unwrap() {
         println!(
             "{:16} {}B ({}B compressed)",
@@ -104,6 +120,17 @@ fn list(package: Package) {
             resource.compressed_size(),
         );
     }
+
+    Ok(())
 }
 
-fn extract(package: Package, paths: &[String]) {}
+fn extract(package: Package) -> Result<(), Box<Error>> {
+    for resource in package.resources().unwrap() {
+        let mut file = File::create(resource.path())?;
+        let mut resource = package.stream(resource.path()).unwrap();
+
+        io::copy(&mut resource, &mut file)?;
+    }
+
+    Ok(())
+}

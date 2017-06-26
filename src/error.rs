@@ -2,7 +2,7 @@
 use rusqlite;
 
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum Error {
     /// An error occurred while compressing a resource.
     CompressionError,
