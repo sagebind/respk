@@ -4,6 +4,12 @@ version = "0.1.0"
 authors = ["Stephen M. Coakley <me@stephencoakley.com>"]
 categories = ["games"]
 description = "Manage resource files using a fast, custom open format designed especially for use in games."
+documentation = "https://docs.rs/crate/respk"
+homepage = "https://github.com/sagebind/respk"
+repository = "https://github.com/sagebind/respk"
+readme = "README.md"
+keywords = ["archive", "package", "resource", "asset"]
+license = "MIT"
 
 [dependencies]
 lz4 = "1.21"
