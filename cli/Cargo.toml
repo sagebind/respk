@@ -1,0 +1,12 @@
+[package]
+name = "respk-cli"
+version = "0.1.0"
+authors = ["Stephen M. Coakley <me@stephencoakley.com>"]
+description = "SputnikVM CLI"
+
+[dependencies]
+getopts = "0.2.14"
+walkdir = "1"
+
+[dependencies.respk]
+path = ".."

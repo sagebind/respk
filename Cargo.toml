@@ -2,12 +2,15 @@
 name = "respk"
 version = "0.1.0"
 authors = ["Stephen M. Coakley <me@stephencoakley.com>"]
+categories = ["games"]
+description = "Manage resource files using a fast, custom open format designed especially for use in games."
 
 [dependencies]
-getopts = "0.2.14"
 lz4 = "1.21"
-walkdir = "1"
 
 [dependencies.rusqlite]
 version = "0.12.0"
 features = ["blob", "bundled"]
+
+[workspace]
+members = ["cli"]

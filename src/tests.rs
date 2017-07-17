@@ -1,6 +1,5 @@
-#![allow(unused_imports)]
-use Error;
-use Package;
+use error::Error;
+use package::Package;
 use std::io::Read;
 
 

@@ -6,6 +6,7 @@ mod compression;
 mod error;
 mod package;
 mod resource;
+#[cfg(test)]
 mod tests;
 
 pub use error::Error;
