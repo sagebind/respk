@@ -1,6 +1,6 @@
 [package]
 name = "respk"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Stephen M. Coakley <me@stephencoakley.com>"]
 categories = ["games"]
 description = "Manage resource files using a fast, custom open format designed especially for use in games."
