@@ -1,7 +1,7 @@
 # ResPK
 ResPK is a fast and open SQLite-based archive format specifically designed for storing game resources.
 
-[![CircleCI](https://img.shields.io/circleci/project/github/sagebind/respk.svg)](https://circleci.com/gh/sagebind/respk)
+[![Shippable](https://img.shields.io/shippable/59f4fe469ce1cc0700911943.svg)](https://app.shippable.com/github/sagebind/respk)
 [![Crates.io](https://img.shields.io/crates/v/respk.svg)](https://crates.io/crates/respk)
 [![Documentation](https://docs.rs/respk/badge.svg)](https://docs.rs/respk)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
