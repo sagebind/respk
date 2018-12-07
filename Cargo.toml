@@ -4,7 +4,7 @@ version = "0.1.2"
 authors = ["Stephen M. Coakley <me@stephencoakley.com>"]
 categories = ["games"]
 description = "Manage resource files using a fast, custom open format designed especially for use in games."
-documentation = "https://docs.rs/crate/respk"
+documentation = "https://docs.rs/respk"
 homepage = "https://github.com/sagebind/respk"
 repository = "https://github.com/sagebind/respk"
 readme = "README.md"
@@ -13,10 +13,10 @@ license = "MIT"
 edition = "2018"
 
 [dependencies]
-lz4 = "1.21"
+lz4 = "1.23"
 
 [dependencies.rusqlite]
-version = "0.14.0"
+version = "0.15"
 features = ["blob", "bundled"]
 
 [workspace]

@@ -1,8 +1,9 @@
 use crate::compression;
-use crate::resource::*;
 use crate::Error;
-use rusqlite::blob::Blob;
+use crate::resource::*;
 use rusqlite::{Connection, DatabaseName};
+use rusqlite::blob::Blob;
+use rusqlite::types::ToSql;
 use std::io::{self, Read};
 use std::path::Path;
 
@@ -37,7 +38,7 @@ impl Package {
 
         // If the database did not already exist, create the tables.
         if !file_exists {
-            connection.execute(SCHEMA, &[])?;
+            connection.execute(SCHEMA, &[] as &[&str])?;
         }
 
         Ok(Package {
@@ -48,7 +49,7 @@ impl Package {
     /// Create a new in-memory package. Useful for testing.
     pub fn temporary() -> Result<Package, Error> {
         let connection = Connection::open_in_memory()?;
-        connection.execute(SCHEMA, &[])?;
+        connection.execute(SCHEMA, &[] as &[&str])?;
 
         Ok(Package {
             db: connection,
@@ -59,7 +60,7 @@ impl Package {
     pub fn len(&self) -> u64 {
         self.db.query_row("
             SELECT COUNT(*) FROM resources
-        ", &[], |row| row.get::<_, i64>(0) as u64).unwrap_or(0)
+        ", &[] as &[&str], |row| row.get::<_, i64>(0) as u64).unwrap_or(0)
     }
 
     /// Get a list of resources in the package.
@@ -68,7 +69,7 @@ impl Package {
             SELECT path, size, LENGTH(contents) AS compressed_size
             FROM resources
         ")?;
-        let mut rows = stmt.query(&[])?;
+        let mut rows = stmt.query(&[] as &[&str])?;
         let mut resources = Vec::new();
 
         while let Some(row) = rows.next() {
@@ -151,7 +152,7 @@ impl Package {
         self.db.execute("
             INSERT OR REPLACE INTO resources (path, size, contents)
             VALUES (?, ?, ?)
-        ", &[&path, &(size as i64), &compressed_contents])?;
+        ", &[&path as &dyn ToSql, &(size as i64) as &dyn ToSql, &compressed_contents as &dyn ToSql])?;
 
         Ok(())
     }
