@@ -1,6 +1,4 @@
 //! Error definitions.
-use rusqlite;
-
 
 /// Enum of possible errors from ResPK.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -23,4 +21,3 @@ impl From<rusqlite::Error> for Error {
         Error::InternalError
     }
 }
-

@@ -10,6 +10,7 @@ repository = "https://github.com/sagebind/respk"
 readme = "README.md"
 keywords = ["archive", "package", "resource", "asset"]
 license = "MIT"
+edition = "2018"
 
 [dependencies]
 lz4 = "1.21"

@@ -1,7 +1,6 @@
-use error::Error;
-use package::Package;
+use respk::Error;
+use respk::Package;
 use std::io::Read;
-
 
 #[test]
 fn open() {
@@ -30,7 +29,7 @@ fn read_nonexistent_resource_fails() {
     let package = Package::temporary().unwrap();
 
     match package.read("test") {
-        Err(Error::ResourceNotFound) => {},
+        Err(Error::ResourceNotFound) => {}
         _ => panic!("expected Error::ResourceNotFound)"),
     }
 }
@@ -73,10 +72,7 @@ fn stream_resource() {
     package.write("test", "test".as_bytes()).unwrap();
 
     let mut bytes = Vec::new();
-    package.stream("test")
-        .unwrap()
-        .read_to_end(&mut bytes)
-        .unwrap();
+    package.stream("test").unwrap().read_to_end(&mut bytes).unwrap();
 
     assert!(&bytes as &[u8] == "test".as_bytes());
 }
@@ -87,7 +83,7 @@ fn stream_nonexistent_resource_fails() {
     let stream = package.stream("test");
 
     match stream {
-        Err(Error::ResourceNotFound) => {},
+        Err(Error::ResourceNotFound) => {}
         _ => panic!("expected Error::ResourceNotFound)"),
     }
 }

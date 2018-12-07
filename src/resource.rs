@@ -2,7 +2,6 @@ use rusqlite::Row;
 use std::ops::Deref;
 use std::str;
 
-
 /// Provides information about a resource.
 #[derive(Clone, Debug)]
 pub struct ResourceInfo {
@@ -35,7 +34,6 @@ impl ResourceInfo {
         }
     }
 }
-
 
 /// A decompressed resource.
 #[derive(Debug)]

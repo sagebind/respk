@@ -1,13 +1,13 @@
 //! Provides methods for compressing and decompressing resource file data.
 //! Compression is done using the LZ4 algorithm, which trades some compression size for high speed decompressing.
-use Error;
-use lz4;
-use std::io::{self, Read};
 
+use crate::Error;
+use std::io::{self, Read};
 
 /// Compress an input stream and return the results and the uncompressed size.
 pub fn compress<R: Read>(mut input: R) -> Result<(u64, Vec<u8>), Error> {
-    let mut encoder = lz4::EncoderBuilder::new().build(Vec::new())
+    let mut encoder = lz4::EncoderBuilder::new()
+        .build(Vec::new())
         .map_err(|_| Error::CompressionError)?;
 
     let size = io::copy(&mut input, &mut encoder)

@@ -1,12 +1,10 @@
-use compression;
-use Error;
-use lz4;
-use resource::*;
-use rusqlite::{Connection, DatabaseName};
+use crate::compression;
+use crate::resource::*;
+use crate::Error;
 use rusqlite::blob::Blob;
+use rusqlite::{Connection, DatabaseName};
 use std::io::{self, Read};
 use std::path::Path;
-
 
 // Schema for the SQLite database.
 const SCHEMA: &'static str = "
@@ -47,8 +45,8 @@ impl Package {
         })
     }
 
-    /// Create a new in-memory package. Used for testing.
-    pub(crate) fn temporary() -> Result<Package, Error> {
+    /// Create a new in-memory package. Useful for testing.
+    pub fn temporary() -> Result<Package, Error> {
         let connection = Connection::open_in_memory()?;
         connection.execute(SCHEMA, &[])?;
 
