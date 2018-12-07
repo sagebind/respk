@@ -1,7 +1,3 @@
-extern crate getopts;
-extern crate respk;
-extern crate walkdir;
-
 use respk::Package;
 use std::env;
 use std::error::Error;
@@ -9,7 +5,6 @@ use std::fs::File;
 use std::io;
 use std::process::exit;
 use walkdir::WalkDir;
-
 
 macro_rules! printerr {
     ($fmt:expr) => {

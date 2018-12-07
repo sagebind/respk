@@ -2,11 +2,12 @@
 name = "respk-cli"
 version = "0.1.0"
 authors = ["Stephen M. Coakley <me@stephencoakley.com>"]
-description = "SputnikVM CLI"
+description = "ResPK CLI"
+edition = "2018"
 
 [dependencies]
-getopts = "0.2.14"
-walkdir = "1"
+getopts = "0.2"
+walkdir = "2"
 
 [dependencies.respk]
 path = ".."
