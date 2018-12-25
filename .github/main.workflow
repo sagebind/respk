@@ -1,9 +1,9 @@
 workflow "Main" {
   on = "push"
-  resolves = ["Build"]
+  resolves = ["Test"]
 }
 
-action "Build" {
+action "Test" {
   uses = "docker://rust"
   args = "cargo test"
 }
