@@ -16,7 +16,7 @@ edition = "2018"
 lz4 = "1.23"
 
 [dependencies.rusqlite]
-version = "0.16"
+version = "0.24"
 features = ["blob", "bundled"]
 
 [workspace]
